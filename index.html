@@ -534,11 +534,14 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: #0a0805;
             z-index: 10000;
-            overflow: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .cinematic-overlay.active {
@@ -546,6 +549,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+        
+        /* iOS Safari fix */
+        @supports (-webkit-touch-callout: none) {
+            .cinematic-overlay {
+                min-height: -webkit-fill-available;
+            }
         }
 
         .cinematic-close {
@@ -696,29 +706,46 @@
 
         /* Cinematic controls */
         .cinematic-controls {
-            position: absolute;
-            bottom: 30px;
+            position: fixed;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 20px;
+            gap: 10px;
             z-index: 10001;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 10px;
+            max-width: 100%;
         }
 
         .cinematic-btn {
-            background: rgba(42, 37, 24, 0.9);
+            background: rgba(42, 37, 24, 0.95);
             border: 1px solid #5a5040;
             color: #c4a574;
-            padding: 12px 30px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .cinematic-btn:hover {
-            background: rgba(90, 80, 64, 0.9);
+        .cinematic-btn:hover, .cinematic-btn:active {
+            background: rgba(90, 80, 64, 0.95);
             color: #fff;
+        }
+        
+        @media (max-width: 600px) {
+            .cinematic-controls {
+                bottom: 10px;
+                gap: 8px;
+            }
+            .cinematic-btn {
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
         }
 
         /* Launch button for map section */
@@ -732,15 +759,24 @@
             cursor: pointer;
             margin-top: 30px;
             transition: all 0.3s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .launch-cinematic:hover {
+        .launch-cinematic:hover, .launch-cinematic:active {
             background: linear-gradient(135deg, #5a5040, #3d3428);
             color: #fff;
-            transform: scale(1.05);
+        }
+        
+        @media (max-width: 600px) {
+            .launch-cinematic {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -813,8 +849,6 @@
         </p>
 
         <div class="map-container" style="background: linear-gradient(135deg, #2a2318 0%, #1a1510 100%); border: 2px solid #3d3428; position: relative; overflow: hidden;">
-            <!-- Vintage paper texture overlay -->
-            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\"><rect fill=\"%23000\" fill-opacity=\"0.03\" width=\"100\" height=\"100\"/><circle fill=\"%23fff\" fill-opacity=\"0.02\" cx=\"25\" cy=\"25\" r=\"1\"/><circle fill=\"%23fff\" fill-opacity=\"0.02\" cx=\"75\" cy=\"75\" r=\"1\"/></svg>'); pointer-events: none; opacity: 0.5;"></div>
             
             <!-- Campaign selector -->
             <div class="map-controls" style="position: relative; z-index: 10;">
@@ -1631,21 +1665,34 @@
     ];
     
     function launchCinematic() {
-        document.getElementById('cinematicOverlay').classList.add('active');
+        const overlay = document.getElementById('cinematicOverlay');
+        overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.height = '100%';
         cinematicRunning = true;
         cinematicPaused = false;
         currentSection = 0;
         document.getElementById('pauseBtn').textContent = '⏸ Pause';
-        playCinematicSection(0);
+        
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+            playCinematicSection(0);
+        }, 100);
     }
     
     function closeCinematic() {
         document.getElementById('cinematicOverlay').classList.remove('active');
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
         cinematicRunning = false;
         if (cinematicTimeout) clearTimeout(cinematicTimeout);
-        window.speechSynthesis.cancel();
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
     }
     
     function playCinematicSection(index) {
@@ -1707,14 +1754,30 @@
         
         // Play narration if enabled
         if (narrationEnabled && section.narration && 'speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(section.narration);
-            utterance.rate = 0.85;
-            utterance.pitch = 0.9;
-            // Try to get a deeper voice
-            const voices = speechSynthesis.getVoices();
-            const preferredVoice = voices.find(v => v.name.includes('Daniel') || v.name.includes('Alex') || v.name.includes('Male'));
-            if (preferredVoice) utterance.voice = preferredVoice;
-            window.speechSynthesis.speak(utterance);
+            try {
+                // Cancel any existing speech first
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(section.narration);
+                utterance.rate = 0.85;
+                utterance.pitch = 0.9;
+                
+                // Try to get a deeper voice
+                const voices = speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    const preferredVoice = voices.find(v => 
+                        v.name.includes('Daniel') || 
+                        v.name.includes('Alex') || 
+                        v.name.toLowerCase().includes('male') ||
+                        v.lang.startsWith('en')
+                    );
+                    if (preferredVoice) utterance.voice = preferredVoice;
+                }
+                
+                window.speechSynthesis.speak(utterance);
+            } catch (e) {
+                console.log('Speech synthesis error:', e);
+            }
         }
         
         // Schedule next section
@@ -1755,16 +1818,31 @@
         narrationEnabled = !narrationEnabled;
         const btn = document.getElementById('narrationBtn');
         btn.textContent = narrationEnabled ? '🔊 Narration On' : '🔇 Narration Off';
-        if (!narrationEnabled) {
-            window.speechSynthesis.cancel();
+        if (!narrationEnabled && 'speechSynthesis' in window) {
+            try {
+                window.speechSynthesis.cancel();
+            } catch (e) {}
         }
     }
     
     // Load voices (needed for some browsers)
     if ('speechSynthesis' in window) {
-        speechSynthesis.getVoices();
-        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+        try {
+            speechSynthesis.getVoices();
+            speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+        } catch (e) {}
     }
+    
+    // Ensure buttons work on touch devices
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add touch support to cinematic buttons
+        document.querySelectorAll('.cinematic-btn, .launch-cinematic').forEach(btn => {
+            btn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                this.click();
+            });
+        });
+    });
     </script>
 
     <script>
