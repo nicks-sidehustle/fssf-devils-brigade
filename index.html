@@ -581,103 +581,345 @@
     </section>
 
     <!-- THE JOURNEY MAP -->
-    <section class="fade-in">
-        <h2 class="section-title">The Journey</h2>
+    <section class="fade-in" id="campaign-map-section">
+        <h2 class="section-title">The Campaign Trail</h2>
         <p class="narration">
-            From small towns across North America to the battlefields of Europe — 
-            trace the path these men traveled.
+            Follow the Force from training grounds to the front lines — 
+            and see how their battles helped turn the tide of the war.
         </p>
 
-        <div class="map-container">
-            <div class="map-controls">
-                <button class="map-btn active" onclick="showPhase('all')">Full Journey</button>
-                <button class="map-btn" onclick="showPhase('training')">Training</button>
-                <button class="map-btn" onclick="showPhase('pacific')">Pacific</button>
-                <button class="map-btn" onclick="showPhase('europe')">Europe</button>
+        <div class="map-container" style="background: linear-gradient(135deg, #2a2318 0%, #1a1510 100%); border: 2px solid #3d3428; position: relative; overflow: hidden;">
+            <!-- Vintage paper texture overlay -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\"><rect fill=\"%23000\" fill-opacity=\"0.03\" width=\"100\" height=\"100\"/><circle fill=\"%23fff\" fill-opacity=\"0.02\" cx=\"25\" cy=\"25\" r=\"1\"/><circle fill=\"%23fff\" fill-opacity=\"0.02\" cx=\"75\" cy=\"75\" r=\"1\"/></svg>'); pointer-events: none; opacity: 0.5;"></div>
+            
+            <!-- Campaign selector -->
+            <div class="map-controls" style="position: relative; z-index: 10;">
+                <button class="map-btn active" onclick="showCampaign(0)" id="btn-0">▶ Play Journey</button>
+                <button class="map-btn" onclick="showCampaign(1)" id="btn-1">Training</button>
+                <button class="map-btn" onclick="showCampaign(2)" id="btn-2">Kiska</button>
+                <button class="map-btn" onclick="showCampaign(3)" id="btn-3">Italy</button>
+                <button class="map-btn" onclick="showCampaign(4)" id="btn-4">France</button>
             </div>
             
-            <svg viewBox="0 0 800 400" class="map-svg" id="journeyMap">
-                <!-- Simplified world map outline -->
+            <svg viewBox="0 0 900 450" class="map-svg" id="campaignMap" style="position: relative; z-index: 5;">
                 <defs>
-                    <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style="stop-color:#666"/>
-                        <stop offset="100%" style="stop-color:#999"/>
+                    <!-- Vintage sepia gradient for land -->
+                    <linearGradient id="landGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4a4030"/>
+                        <stop offset="100%" style="stop-color:#3a3025"/>
                     </linearGradient>
+                    <!-- Aged paper for ocean -->
+                    <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#2a2518"/>
+                        <stop offset="100%" style="stop-color:#1f1a12"/>
+                    </linearGradient>
+                    <!-- Route line gradient -->
+                    <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#8b7355"/>
+                        <stop offset="100%" style="stop-color:#c4a574"/>
+                    </linearGradient>
+                    <!-- Glow filter -->
+                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
                 </defs>
                 
-                <!-- North America outline (simplified) -->
-                <path d="M50,100 Q100,80 180,90 L200,120 Q220,100 280,110 L320,140 Q340,120 380,130 L400,180 L380,220 L340,260 L280,280 L200,270 L140,240 L100,200 L70,150 Z" 
-                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+                <!-- Ocean background -->
+                <rect x="0" y="0" width="900" height="450" fill="url(#oceanGradient)"/>
                 
-                <!-- Europe outline (simplified) -->
-                <path d="M500,80 Q540,70 580,75 L620,90 Q660,85 700,100 L720,140 L700,180 L660,200 L600,210 L540,200 L500,170 L490,130 Z" 
-                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+                <!-- North America (more detailed) -->
+                <path d="M30,50 Q60,30 120,35 L180,50 Q200,40 250,45 L300,70 Q320,60 360,75 L400,100 
+                         Q420,90 450,105 L470,140 L450,180 L420,210 L380,240 L340,260 L290,280 
+                         L240,285 L190,275 L140,255 L100,220 L70,180 L50,130 L40,90 Z" 
+                      fill="url(#landGradient)" stroke="#5a5040" stroke-width="1.5"/>
                 
-                <!-- Italy (simplified) -->
-                <path d="M580,180 L600,210 L590,250 L570,280 L560,260 L570,220 Z" 
-                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+                <!-- Alaska -->
+                <path d="M40,35 Q70,20 110,25 L140,40 Q155,35 165,45 L160,65 L130,75 L90,70 L55,55 Z" 
+                      fill="url(#landGradient)" stroke="#5a5040" stroke-width="1.5"/>
                 
-                <!-- Alaska (simplified) -->
-                <path d="M60,60 Q90,50 120,55 L140,70 L120,85 L80,80 Z" 
-                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+                <!-- Aleutian Islands chain -->
+                <path d="M30,75 L25,80 M35,82 L30,88 M45,85 L42,92 M58,82 L55,88" 
+                      stroke="#5a5040" stroke-width="1" fill="none"/>
+                <circle cx="25" cy="85" r="3" fill="url(#landGradient)" stroke="#5a5040"/>
+                
+                <!-- Europe (more detailed) -->
+                <path d="M580,60 Q620,45 670,50 L720,65 Q760,55 800,70 L840,100 L860,140 
+                         L850,180 L820,210 L780,230 L730,240 L680,235 L640,220 L600,200 
+                         L570,170 L560,130 L565,90 Z" 
+                      fill="url(#landGradient)" stroke="#5a5040" stroke-width="1.5"/>
+                
+                <!-- Italy (boot shape) -->
+                <path d="M670,200 L685,215 Q695,210 700,225 L695,260 Q700,275 690,295 
+                         L675,310 L660,305 L655,285 L665,260 L660,235 L665,215 Z" 
+                      fill="url(#landGradient)" stroke="#5a5040" stroke-width="1.5"/>
+                
+                <!-- Sicily -->
+                <ellipse cx="675" cy="320" rx="15" ry="10" fill="url(#landGradient)" stroke="#5a5040"/>
+                
+                <!-- UK -->
+                <path d="M560,90 Q575,80 590,85 L600,100 L595,125 L580,135 L565,125 L555,105 Z" 
+                      fill="url(#landGradient)" stroke="#5a5040" stroke-width="1.5"/>
+                
+                <!-- Africa (top) -->
+                <path d="M580,340 Q650,320 750,330 L850,360 L860,400 L800,430 L700,440 L600,420 L560,380 Z" 
+                      fill="url(#landGradient)" stroke="#5a5040" stroke-width="1.5"/>
 
-                <!-- Journey path -->
-                <path id="mainPath" class="journey-path"
-                      d="M200,200 L240,150 L100,70 L240,150 L500,120 L570,230 L620,170" 
-                      fill="none" stroke="url(#pathGradient)" stroke-width="2" stroke-dasharray="5,5"/>
+                <!-- Atlantic Ocean label -->
+                <text x="420" y="200" fill="#4a4030" font-size="16" font-style="italic" font-family="Cinzel, serif" opacity="0.6">Atlantic Ocean</text>
+                
+                <!-- Mediterranean label -->
+                <text x="700" y="355" fill="#4a4030" font-size="11" font-style="italic" font-family="Cinzel, serif" opacity="0.6">Mediterranean</text>
 
-                <!-- Location markers -->
-                <g id="locations">
-                    <!-- Oklahoma (origin) -->
-                    <circle cx="200" cy="200" r="6" fill="#888" class="location-dot" style="animation-delay: 0.5s"/>
-                    <text x="200" y="220" text-anchor="middle" class="location-label" style="animation-delay: 0.5s">Oklahoma</text>
-                    <text x="200" y="232" text-anchor="middle" class="location-label" style="animation-delay: 0.5s; font-size: 9px; fill: #888">(Home)</text>
+                <!-- ROUTE PATHS (animated) -->
+                <g id="route-paths">
+                    <!-- Path 1: Oklahoma to Montana -->
+                    <path id="path1" d="M280,230 Q300,180 310,155" 
+                          fill="none" stroke="url(#routeGradient)" stroke-width="3" 
+                          stroke-dasharray="500" stroke-dashoffset="500" stroke-linecap="round"/>
                     
-                    <!-- Montana (training) -->
-                    <circle cx="240" cy="150" r="8" fill="#aaa" class="location-dot" style="animation-delay: 1s"/>
-                    <text x="240" y="138" text-anchor="middle" class="location-label" style="animation-delay: 1s">Helena, Montana</text>
-                    <text x="240" y="126" text-anchor="middle" class="location-label" style="animation-delay: 1s; font-size: 9px; fill: #888">(Training - 1942)</text>
+                    <!-- Path 2: Montana to Kiska -->
+                    <path id="path2" d="M310,155 Q200,100 45,85" 
+                          fill="none" stroke="url(#routeGradient)" stroke-width="3" 
+                          stroke-dasharray="500" stroke-dashoffset="500" stroke-linecap="round"/>
                     
-                    <!-- Kiska, Alaska -->
-                    <circle cx="100" cy="70" r="6" fill="#777" class="location-dot" style="animation-delay: 1.5s"/>
-                    <text x="100" y="58" text-anchor="middle" class="location-label" style="animation-delay: 1.5s">Kiska, Alaska</text>
-                    <text x="100" y="46" text-anchor="middle" class="location-label" style="animation-delay: 1.5s; font-size: 9px; fill: #888">(Aug 1943)</text>
+                    <!-- Path 3: Back to Montana, then to Italy -->
+                    <path id="path3" d="M310,155 Q450,180 550,200 Q620,220 670,255" 
+                          fill="none" stroke="url(#routeGradient)" stroke-width="3" 
+                          stroke-dasharray="800" stroke-dashoffset="800" stroke-linecap="round"/>
                     
-                    <!-- Italy -->
-                    <circle cx="570" cy="230" r="8" fill="#aaa" class="location-dot" style="animation-delay: 2s"/>
-                    <text x="545" y="245" text-anchor="middle" class="location-label" style="animation-delay: 2s">Italy</text>
-                    <text x="545" y="257" text-anchor="middle" class="location-label" style="animation-delay: 2s; font-size: 9px; fill: #888">(Dec 1943 - Jun 1944)</text>
-                    
-                    <!-- Southern France -->
-                    <circle cx="540" cy="170" r="6" fill="#888" class="location-dot" style="animation-delay: 2.5s"/>
-                    <text x="540" y="158" text-anchor="middle" class="location-label" style="animation-delay: 2.5s">Southern France</text>
-                    <text x="540" y="146" text-anchor="middle" class="location-label" style="animation-delay: 2.5s; font-size: 9px; fill: #888">(Aug - Dec 1944)</text>
+                    <!-- Path 4: Italy to Southern France -->
+                    <path id="path4" d="M670,255 Q660,230 640,200" 
+                          fill="none" stroke="url(#routeGradient)" stroke-width="3" 
+                          stroke-dasharray="300" stroke-dashoffset="300" stroke-linecap="round"/>
                 </g>
 
-                <!-- Battle markers (smaller, indicating conflict) -->
-                <g id="battles" fill="none" stroke="#666" stroke-width="1">
-                    <circle cx="570" cy="210" r="3" fill="#555" title="Monte la Difensa"/>
-                    <circle cx="575" cy="240" r="3" fill="#555" title="Anzio"/>
-                    <circle cx="580" cy="225" r="3" fill="#555" title="Rome"/>
+                <!-- LOCATION MARKERS -->
+                <g id="markers">
+                    <!-- Oklahoma -->
+                    <g id="marker-ok" class="marker" style="opacity: 0;">
+                        <circle cx="280" cy="230" r="8" fill="#c4a574" stroke="#fff" stroke-width="2" filter="url(#glow)"/>
+                        <text x="280" y="255" text-anchor="middle" fill="#c4a574" font-size="12" font-weight="bold">Oklahoma</text>
+                        <text x="280" y="268" text-anchor="middle" fill="#8b7355" font-size="9">Roland's Home</text>
+                    </g>
+                    
+                    <!-- Montana -->
+                    <g id="marker-mt" class="marker" style="opacity: 0;">
+                        <circle cx="310" cy="155" r="10" fill="#c4a574" stroke="#fff" stroke-width="2" filter="url(#glow)"/>
+                        <text x="310" y="138" text-anchor="middle" fill="#c4a574" font-size="12" font-weight="bold">Helena, Montana</text>
+                        <text x="310" y="125" text-anchor="middle" fill="#8b7355" font-size="9">Training: July 1942</text>
+                    </g>
+                    
+                    <!-- Kiska -->
+                    <g id="marker-kiska" class="marker" style="opacity: 0;">
+                        <circle cx="45" cy="85" r="8" fill="#a08060" stroke="#fff" stroke-width="2" filter="url(#glow)"/>
+                        <text x="75" y="95" fill="#c4a574" font-size="11" font-weight="bold">Kiska</text>
+                        <text x="75" y="107" fill="#8b7355" font-size="9">Aug 1943</text>
+                    </g>
+                    
+                    <!-- Italy battles -->
+                    <g id="marker-italy" class="marker" style="opacity: 0;">
+                        <circle cx="670" cy="255" r="10" fill="#c4a574" stroke="#fff" stroke-width="2" filter="url(#glow)"/>
+                        <circle cx="678" cy="275" r="5" fill="#a08060" stroke="#fff" stroke-width="1"/>
+                        <circle cx="680" cy="295" r="5" fill="#a08060" stroke="#fff" stroke-width="1"/>
+                        <text x="705" y="250" fill="#c4a574" font-size="11" font-weight="bold">Monte la Difensa</text>
+                        <text x="705" y="272" fill="#8b7355" font-size="9">Anzio</text>
+                        <text x="705" y="292" fill="#8b7355" font-size="9">Rome</text>
+                        <text x="705" y="262" fill="#8b7355" font-size="9">Dec 1943 - Jun 1944</text>
+                    </g>
+                    
+                    <!-- Southern France -->
+                    <g id="marker-france" class="marker" style="opacity: 0;">
+                        <circle cx="640" cy="200" r="8" fill="#c4a574" stroke="#fff" stroke-width="2" filter="url(#glow)"/>
+                        <text x="640" y="185" text-anchor="middle" fill="#c4a574" font-size="11" font-weight="bold">Southern France</text>
+                        <text x="640" y="172" text-anchor="middle" fill="#8b7355" font-size="9">Aug - Dec 1944</text>
+                    </g>
+                </g>
+                
+                <!-- Compass rose -->
+                <g transform="translate(820, 380)">
+                    <circle cx="0" cy="0" r="25" fill="none" stroke="#5a5040" stroke-width="1"/>
+                    <line x1="0" y1="-20" x2="0" y2="20" stroke="#5a5040" stroke-width="1"/>
+                    <line x1="-20" y1="0" x2="20" y2="0" stroke="#5a5040" stroke-width="1"/>
+                    <text x="0" y="-28" text-anchor="middle" fill="#8b7355" font-size="10" font-weight="bold">N</text>
                 </g>
             </svg>
             
-            <div class="map-legend">
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #888"></div>
-                    <span>Origin/Destination</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #aaa"></div>
-                    <span>Major Location</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #555"></div>
-                    <span>Combat Operations</span>
+            <!-- Campaign info panel -->
+            <div id="campaign-info" style="background: rgba(42, 35, 24, 0.95); border: 1px solid #5a5040; border-radius: 8px; padding: 20px; margin-top: 20px; min-height: 120px; position: relative; z-index: 10;">
+                <div id="info-content">
+                    <h4 style="color: #c4a574; margin-bottom: 10px; font-family: 'Cinzel', serif;">Click a campaign to learn more</h4>
+                    <p style="color: #8b7355;">Or press "Play Journey" to watch the path unfold.</p>
                 </div>
             </div>
         </div>
     </section>
+    
+    <script>
+    // Campaign data with strategic context
+    const campaigns = {
+        1: {
+            title: "Training at Fort Harrison",
+            date: "July 1942 - August 1943",
+            description: "At Fort William Henry Harrison near Helena, Montana, American and Canadian volunteers underwent grueling training — parachuting, skiing, demolitions, hand-to-hand combat. They became the first joint US-Canadian combat unit in history.",
+            strategic: "<strong>Why it mattered:</strong> The Force was created to execute Operation Plough — a raid on Norwegian power plants. Though that mission was cancelled, the elite unit stayed together, ready for wherever they were needed most."
+        },
+        2: {
+            title: "Operation Cottage — Kiska, Alaska", 
+            date: "August 15, 1943",
+            description: "The Force's first combat deployment. They landed on Kiska Island expecting fierce Japanese resistance — but the enemy had secretly evacuated days earlier. Despite no enemy contact, 28 men died from friendly fire and accidents in the fog.",
+            strategic: "<strong>Why it mattered:</strong> Retaking the Aleutians eliminated Japan's only foothold on North American soil. Though anticlimactic, it secured Alaska and freed the Force for deployment to Europe, where the real fight awaited."
+        },
+        3: {
+            title: "The Italian Campaign",
+            date: "December 1943 - June 1944",
+            description: "Monte la Difensa: A German fortress on a 3,000-foot cliff that had stopped every Allied assault. The Force scaled it at night in freezing rain and took it in 2 hours. At Anzio, they held the line for 99 days of continuous combat, earning the name 'Black Devils.'",
+            strategic: "<strong>Why it mattered:</strong> Breaking the Winter Line at Monte la Difensa opened the path to Rome — the first Axis capital to fall. The Force spearheaded the liberation of Rome on June 4, 1944, just two days before D-Day. This tied down German forces that might otherwise have reinforced Normandy."
+        },
+        4: {
+            title: "Operation Dragoon — Southern France",
+            date: "August - December 1944",
+            description: "The Force landed on the islands of Port-Cros and Levant, then pushed into mainland France. They fought through the Riviera and into the Alps, holding the Franco-Italian border until the unit was disbanded in December 1944.",
+            strategic: "<strong>Why it mattered:</strong> Operation Dragoon created a second front in France, squeezing German forces from the south while Eisenhower pushed from the north. It accelerated the liberation of France and hastened Germany's collapse. Within 6 months of the Force disbanding, the war in Europe was over."
+        }
+    };
+    
+    let animationTimeout = null;
+    
+    function showCampaign(num) {
+        // Clear any running animation
+        if (animationTimeout) clearTimeout(animationTimeout);
+        
+        // Reset all buttons
+        document.querySelectorAll('.map-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + num).classList.add('active');
+        
+        if (num === 0) {
+            // Play full animation
+            playFullJourney();
+            return;
+        }
+        
+        // Reset all paths and markers
+        ['path1', 'path2', 'path3', 'path4'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.strokeDashoffset = el.getTotalLength ? el.getTotalLength() : 500;
+        });
+        document.querySelectorAll('.marker').forEach(m => m.style.opacity = '0');
+        
+        // Show relevant elements based on campaign
+        const markers = {
+            1: ['marker-ok', 'marker-mt'],
+            2: ['marker-ok', 'marker-mt', 'marker-kiska'],
+            3: ['marker-ok', 'marker-mt', 'marker-italy'],
+            4: ['marker-ok', 'marker-mt', 'marker-italy', 'marker-france']
+        };
+        
+        const paths = {
+            1: ['path1'],
+            2: ['path1', 'path2'],
+            3: ['path1', 'path3'],
+            4: ['path1', 'path3', 'path4']
+        };
+        
+        markers[num].forEach(id => {
+            document.getElementById(id).style.opacity = '1';
+        });
+        
+        paths[num].forEach(id => {
+            const path = document.getElementById(id);
+            if (path) path.style.strokeDashoffset = '0';
+        });
+        
+        // Update info panel
+        const info = campaigns[num];
+        document.getElementById('info-content').innerHTML = `
+            <h4 style="color: #c4a574; margin-bottom: 8px; font-family: 'Cinzel', serif;">${info.title}</h4>
+            <p style="color: #a08060; font-size: 0.9rem; margin-bottom: 10px;">${info.date}</p>
+            <p style="color: #c4b49a; margin-bottom: 12px;">${info.description}</p>
+            <p style="color: #8b7355; font-size: 0.9rem;">${info.strategic}</p>
+        `;
+    }
+    
+    function playFullJourney() {
+        // Reset everything
+        ['path1', 'path2', 'path3', 'path4'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.transition = 'none';
+                el.style.strokeDashoffset = el.getTotalLength ? el.getTotalLength() : 500;
+            }
+        });
+        document.querySelectorAll('.marker').forEach(m => {
+            m.style.transition = 'none';
+            m.style.opacity = '0';
+        });
+        
+        // Force reflow
+        document.getElementById('campaignMap').offsetHeight;
+        
+        // Enable transitions
+        ['path1', 'path2', 'path3', 'path4'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.transition = 'stroke-dashoffset 1.5s ease';
+        });
+        document.querySelectorAll('.marker').forEach(m => {
+            m.style.transition = 'opacity 0.5s ease';
+        });
+        
+        // Sequence the animation
+        document.getElementById('info-content').innerHTML = '<h4 style="color: #c4a574; font-family: Cinzel, serif;">The Journey Begins...</h4><p style="color: #8b7355;">Oklahoma — where Roland called home.</p>';
+        
+        // Step 1: Show Oklahoma
+        setTimeout(() => {
+            document.getElementById('marker-ok').style.opacity = '1';
+        }, 300);
+        
+        // Step 2: Path to Montana
+        setTimeout(() => {
+            document.getElementById('path1').style.strokeDashoffset = '0';
+            document.getElementById('info-content').innerHTML = '<h4 style="color: #c4a574; font-family: Cinzel, serif;">Training</h4><p style="color: #8b7355;">Helena, Montana — where boys became soldiers.</p>';
+        }, 1000);
+        
+        setTimeout(() => {
+            document.getElementById('marker-mt').style.opacity = '1';
+        }, 2000);
+        
+        // Step 3: Path to Kiska
+        setTimeout(() => {
+            document.getElementById('path2').style.strokeDashoffset = '0';
+            document.getElementById('info-content').innerHTML = '<h4 style="color: #c4a574; font-family: Cinzel, serif;">First Blood</h4><p style="color: #8b7355;">Kiska, Alaska — the Force\'s first combat deployment.</p>';
+        }, 3000);
+        
+        setTimeout(() => {
+            document.getElementById('marker-kiska').style.opacity = '1';
+        }, 4000);
+        
+        // Step 4: Path to Italy
+        setTimeout(() => {
+            document.getElementById('path3').style.strokeDashoffset = '0';
+            document.getElementById('info-content').innerHTML = '<h4 style="color: #c4a574; font-family: Cinzel, serif;">Into the Fire</h4><p style="color: #8b7355;">Italy — Monte la Difensa, Anzio, Rome. This is where legends were made.</p>';
+        }, 5000);
+        
+        setTimeout(() => {
+            document.getElementById('marker-italy').style.opacity = '1';
+        }, 6500);
+        
+        // Step 5: Path to France
+        setTimeout(() => {
+            document.getElementById('path4').style.strokeDashoffset = '0';
+            document.getElementById('info-content').innerHTML = '<h4 style="color: #c4a574; font-family: Cinzel, serif;">The Final Push</h4><p style="color: #8b7355;">Southern France — Operation Dragoon. The beginning of the end.</p>';
+        }, 7500);
+        
+        setTimeout(() => {
+            document.getElementById('marker-france').style.opacity = '1';
+            document.getElementById('info-content').innerHTML = '<h4 style="color: #c4a574; font-family: Cinzel, serif;">December 5, 1944</h4><p style="color: #8b7355;">The Force disbands near Menton, France. Mission accomplished. The war would end five months later.</p>';
+        }, 8500);
+    }
+    </script>
 
     <!-- TRAINING -->
     <section class="fade-in">
