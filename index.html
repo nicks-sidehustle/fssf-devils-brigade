@@ -527,6 +527,230 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* ========== CINEMATIC MODE STYLES ========== */
+        .cinematic-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0a0805;
+            z-index: 10000;
+            overflow: hidden;
+        }
+
+        .cinematic-overlay.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cinematic-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: #666;
+            cursor: pointer;
+            z-index: 10001;
+            transition: color 0.3s;
+        }
+
+        .cinematic-close:hover {
+            color: #fff;
+        }
+
+        .cinematic-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        /* Newspaper headline style */
+        .newspaper-headline {
+            font-family: 'Times New Roman', Georgia, serif;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease;
+            max-width: 900px;
+        }
+
+        .newspaper-headline.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .newspaper-headline .paper-name {
+            font-size: 1rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: #5a5040;
+            border-bottom: 2px solid #5a5040;
+            border-top: 2px solid #5a5040;
+            padding: 5px 0;
+            margin-bottom: 15px;
+        }
+
+        .newspaper-headline .date-line {
+            font-size: 0.9rem;
+            color: #6a6050;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .newspaper-headline h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #c4b49a;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .newspaper-headline .subhead {
+            font-size: 1.3rem;
+            color: #8a7a6a;
+            font-style: italic;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Photo display */
+        .cinematic-photo {
+            max-width: 80%;
+            max-height: 60vh;
+            object-fit: contain;
+            border: 8px solid #2a2518;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .cinematic-photo.visible {
+            opacity: 1;
+        }
+
+        .photo-caption {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #8a7a6a;
+            font-style: italic;
+            text-align: center;
+            max-width: 600px;
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+        }
+
+        .photo-caption.visible {
+            opacity: 1;
+        }
+
+        /* Narration text */
+        .narration-text {
+            font-size: 1.4rem;
+            color: #b0a090;
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.8;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .narration-text.visible {
+            opacity: 1;
+        }
+
+        /* Map in cinematic mode */
+        .cinematic-map {
+            width: 90%;
+            max-width: 1200px;
+            height: 60vh;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .cinematic-map.visible {
+            opacity: 1;
+        }
+
+        /* Progress bar */
+        .cinematic-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b7355, #c4a574);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Cinematic controls */
+        .cinematic-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10001;
+        }
+
+        .cinematic-btn {
+            background: rgba(42, 37, 24, 0.9);
+            border: 1px solid #5a5040;
+            color: #c4a574;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .cinematic-btn:hover {
+            background: rgba(90, 80, 64, 0.9);
+            color: #fff;
+        }
+
+        /* Launch button for map section */
+        .launch-cinematic {
+            background: linear-gradient(135deg, #3d3428, #2a2518);
+            border: 2px solid #5a5040;
+            color: #c4a574;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .launch-cinematic:hover {
+            background: linear-gradient(135deg, #5a5040, #3d3428);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .newspaper-headline h1 {
+                font-size: 2rem;
+            }
+            .cinematic-photo {
+                max-width: 95%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -754,6 +978,16 @@
                     <h4 style="color: #c4a574; margin-bottom: 10px; font-family: 'Cinzel', serif;">Click a campaign to learn more</h4>
                     <p style="color: #8b7355;">Or press "Play Journey" to watch the path unfold.</p>
                 </div>
+            </div>
+            
+            <!-- Launch cinematic experience button -->
+            <div style="text-align: center;">
+                <button class="launch-cinematic" onclick="launchCinematic()">
+                    🎬 Launch Full Cinematic Experience
+                </button>
+                <p style="color: #5a5040; font-size: 0.85rem; margin-top: 10px;">
+                    Fullscreen · Narrated · Historical Headlines & Photos
+                </p>
             </div>
         </div>
     </section>
@@ -1230,6 +1464,308 @@
             <a href="https://arsof-history.org/first_special_service_force/" target="_blank">ARSOF History</a>
         </p>
     </footer>
+
+    <!-- ========== CINEMATIC OVERLAY ========== -->
+    <div class="cinematic-overlay" id="cinematicOverlay">
+        <div class="cinematic-close" onclick="closeCinematic()">✕</div>
+        <div class="cinematic-progress" id="cinematicProgress"></div>
+        
+        <div class="cinematic-content" id="cinematicContent">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+        
+        <div class="cinematic-controls">
+            <button class="cinematic-btn" onclick="toggleCinematicPause()" id="pauseBtn">⏸ Pause</button>
+            <button class="cinematic-btn" onclick="skipCinematicSection()">⏭ Skip Section</button>
+            <button class="cinematic-btn" onclick="toggleCinematicNarration()" id="narrationBtn">🔊 Narration On</button>
+        </div>
+    </div>
+
+    <script>
+    // ========== CINEMATIC EXPERIENCE ==========
+    let cinematicRunning = false;
+    let cinematicPaused = false;
+    let cinematicTimeout = null;
+    let currentSection = 0;
+    let narrationEnabled = true;
+    
+    const cinematicSequence = [
+        // Section 0: Title
+        {
+            type: 'headline',
+            duration: 8000,
+            content: {
+                paper: 'The War Chronicles',
+                date: '1942 - 1945',
+                headline: 'The Devil\'s Brigade',
+                subhead: 'The untold story of the First Special Service Force — and one soldier\'s journey through the war'
+            },
+            narration: 'This is the story of the First Special Service Force. The Devil\'s Brigade. And one soldier who answered the call.'
+        },
+        // Section 1: Training
+        {
+            type: 'headline',
+            duration: 10000,
+            content: {
+                paper: 'Helena Independent',
+                date: 'July 9, 1942',
+                headline: 'Joint U.S.-Canadian Force Activated',
+                subhead: 'Volunteers arrive at Fort Harrison for specialized combat training'
+            },
+            narration: 'In the summer of 1942, young men from across America and Canada arrived in Helena, Montana. They didn\'t know it yet, but they were about to become the most elite fighting force of the war.'
+        },
+        {
+            type: 'photo',
+            duration: 10000,
+            image: 'https://i0.wp.com/unwritten-record.blogs.archives.gov/wp-content/uploads/sites/6/2024/05/111-SC-189158_001.jpg',
+            caption: 'Paratroopers wave to comrades boarding transport planes at Fort Harrison, Montana. These men would become the most feared soldiers in Europe.',
+            narration: 'They trained for missions no conventional force could attempt. Parachuting. Skiing. Demolitions. Hand-to-hand combat. They became brothers — American and Canadian, fighting as one.'
+        },
+        // Section 2: Kiska
+        {
+            type: 'headline',
+            duration: 10000,
+            content: {
+                paper: 'The New York Times',
+                date: 'August 16, 1943',
+                headline: 'Kiska Invaded by Allied Forces',
+                subhead: 'American and Canadian troops land on Japanese-held Aleutian island'
+            },
+            narration: 'August 1943. The Force received their first combat orders. They would retake Kiska Island from the Japanese — the only enemy foothold on North American soil.'
+        },
+        {
+            type: 'text',
+            duration: 10000,
+            content: 'They landed expecting fierce resistance. But the Japanese had already evacuated. Even so, 28 men died in the fog and confusion — from friendly fire and accidents. War, they learned, was unpredictable. And it didn\'t wait for the enemy to show itself.',
+            narration: 'They landed expecting fierce resistance. But the Japanese had already evacuated. Even so, 28 men died in the fog and confusion. War, they learned, was unpredictable.'
+        },
+        // Section 3: Monte la Difensa
+        {
+            type: 'headline',
+            duration: 10000,
+            content: {
+                paper: 'Stars and Stripes',
+                date: 'December 4, 1943',
+                headline: 'Mountain Stronghold Falls to Special Force',
+                subhead: 'Night assault captures German position that stopped all previous attacks'
+            },
+            narration: 'December 1943. Italy. The German Winter Line had stopped the Allied advance cold. One mountain, Monte la Difensa, had repelled every assault. Until the Force arrived.'
+        },
+        {
+            type: 'photo',
+            duration: 12000,
+            image: 'https://i0.wp.com/unwritten-record.blogs.archives.gov/wp-content/uploads/sites/6/2024/05/111-C-3120_001-scaled.jpg',
+            caption: 'The rugged Italian terrain where the Force fought. They scaled 3,000-foot cliffs in freezing rain, at night, to achieve what others could not.',
+            narration: 'They scaled the cliffs at night. In freezing rain. Ropes slick with ice. And they took that mountain in two hours. But the cost was terrible. The Force suffered 77% casualties in the Italian mountains.'
+        },
+        // Section 4: Anzio
+        {
+            type: 'headline',
+            duration: 10000,
+            content: {
+                paper: 'The Washington Post',
+                date: 'February 1944',
+                headline: '"Black Devils" Terror of Anzio',
+                subhead: 'Germans fear night raiders who strike without warning'
+            },
+            narration: 'At Anzio, they held the line for 99 days. 99 days of continuous combat. The Germans called them "Die Schwarzen Teufel" — The Black Devils. Men who appeared from darkness, struck without mercy, and vanished before dawn.'
+        },
+        // Section 5: Rome
+        {
+            type: 'headline',
+            duration: 12000,
+            content: {
+                paper: 'Chicago Daily Tribune',
+                date: 'June 5, 1944',
+                headline: 'Rome Falls to Allies',
+                subhead: 'First Axis capital liberated — Special Force among first to enter city'
+            },
+            narration: 'June 4th, 1944. Rome. The first Axis capital to fall. The Force was among the first Allied units to enter the city. Two days later, the world would turn its attention to Normandy. But the men who took Rome had already done their part.'
+        },
+        // Section 6: Southern France
+        {
+            type: 'headline',
+            duration: 10000,
+            content: {
+                paper: 'San Francisco Chronicle',
+                date: 'August 15, 1944',
+                headline: 'Allies Invade Southern France',
+                subhead: 'Second front opens as forces land on Mediterranean coast'
+            },
+            narration: 'August 1944. Operation Dragoon. The Force landed in Southern France, squeezing Germany from the south while Eisenhower pushed from the north. The end was coming.'
+        },
+        // Section 7: End
+        {
+            type: 'headline',
+            duration: 12000,
+            content: {
+                paper: 'Associated Press',
+                date: 'December 5, 1944',
+                headline: 'First Special Service Force Disbanded',
+                subhead: 'Elite unit\'s mission complete after 2½ years of combat'
+            },
+            narration: 'December 5th, 1944. Near the French-Italian border, the Force held its final formation. Americans and Canadians who had fought as brothers said goodbye. The war would end five months later. They had done what they came to do.'
+        },
+        // Section 8: Roland's Story
+        {
+            type: 'photo',
+            duration: 12000,
+            image: 'images/shadow-box-medals.jpg',
+            caption: 'Roland Oroville Morgan\'s medals. Purple Heart. Bronze Star. Combat Infantryman Badge. Paratrooper Wings. Proof of what one man endured.',
+            narration: 'Roland Oroville Morgan was one of those men. A young man from Oklahoma who joined the Force, fought through Italy and France, and came home changed. The Purple Heart tells us he bled for his country. The Bronze Star tells us he served with valor.'
+        },
+        {
+            type: 'photo',
+            duration: 12000,
+            image: 'images/roland-georgianna-bicycle.jpg',
+            caption: 'Roland and Georgianna — before the war, before everything. They would marry and build a life together in Montana.',
+            narration: 'But this is how he wanted to be remembered. A young man on a bicycle with the woman he loved. He married Georgianna. They raised five children. Roland\'s story didn\'t end in the war. It continued in the family he built.'
+        },
+        // Section 9: Closing
+        {
+            type: 'text',
+            duration: 15000,
+            content: '<div style="font-family: Cinzel, serif; font-size: 2rem; color: #c4a574; margin-bottom: 30px;">They didn\'t see themselves as heroes.</div><div style="font-size: 1.5rem; color: #8a7a6a;">They just wanted to survive — and be remembered.</div><div style="margin-top: 40px; font-size: 1.2rem; color: #5a5040;">This presentation is dedicated to Roland, and to all the men of the Force.<br>The ones who came home, and the ones who didn\'t.</div>',
+            narration: 'They didn\'t see themselves as heroes. They just wanted to survive. And to be remembered. This is for Roland. And for all the men of the Force.'
+        }
+    ];
+    
+    function launchCinematic() {
+        document.getElementById('cinematicOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        cinematicRunning = true;
+        cinematicPaused = false;
+        currentSection = 0;
+        document.getElementById('pauseBtn').textContent = '⏸ Pause';
+        playCinematicSection(0);
+    }
+    
+    function closeCinematic() {
+        document.getElementById('cinematicOverlay').classList.remove('active');
+        document.body.style.overflow = '';
+        cinematicRunning = false;
+        if (cinematicTimeout) clearTimeout(cinematicTimeout);
+        window.speechSynthesis.cancel();
+    }
+    
+    function playCinematicSection(index) {
+        if (!cinematicRunning || index >= cinematicSequence.length) {
+            if (index >= cinematicSequence.length) {
+                // End of sequence - show replay option
+                document.getElementById('cinematicContent').innerHTML = `
+                    <div style="text-align: center;">
+                        <h2 style="color: #c4a574; font-family: Cinzel, serif; margin-bottom: 30px;">End of Experience</h2>
+                        <button class="cinematic-btn" onclick="launchCinematic()">↻ Watch Again</button>
+                        <button class="cinematic-btn" onclick="closeCinematic()" style="margin-left: 20px;">✕ Close</button>
+                    </div>
+                `;
+            }
+            return;
+        }
+        
+        currentSection = index;
+        const section = cinematicSequence[index];
+        const content = document.getElementById('cinematicContent');
+        const progress = document.getElementById('cinematicProgress');
+        
+        // Update progress bar
+        progress.style.width = ((index / cinematicSequence.length) * 100) + '%';
+        
+        // Clear previous content
+        content.innerHTML = '';
+        
+        // Render based on type
+        if (section.type === 'headline') {
+            content.innerHTML = `
+                <div class="newspaper-headline" id="currentHeadline">
+                    <div class="paper-name">${section.content.paper}</div>
+                    <div class="date-line">${section.content.date}</div>
+                    <h1>${section.content.headline}</h1>
+                    <div class="subhead">${section.content.subhead}</div>
+                </div>
+            `;
+            setTimeout(() => {
+                document.getElementById('currentHeadline').classList.add('visible');
+            }, 100);
+        } else if (section.type === 'photo') {
+            content.innerHTML = `
+                <img src="${section.image}" class="cinematic-photo" id="currentPhoto" alt="">
+                <p class="photo-caption" id="currentCaption">${section.caption}</p>
+            `;
+            setTimeout(() => {
+                document.getElementById('currentPhoto').classList.add('visible');
+                document.getElementById('currentCaption').classList.add('visible');
+            }, 100);
+        } else if (section.type === 'text') {
+            content.innerHTML = `
+                <div class="narration-text" id="currentText">${section.content}</div>
+            `;
+            setTimeout(() => {
+                document.getElementById('currentText').classList.add('visible');
+            }, 100);
+        }
+        
+        // Play narration if enabled
+        if (narrationEnabled && section.narration && 'speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(section.narration);
+            utterance.rate = 0.85;
+            utterance.pitch = 0.9;
+            // Try to get a deeper voice
+            const voices = speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.name.includes('Daniel') || v.name.includes('Alex') || v.name.includes('Male'));
+            if (preferredVoice) utterance.voice = preferredVoice;
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Schedule next section
+        cinematicTimeout = setTimeout(() => {
+            if (!cinematicPaused) {
+                playCinematicSection(index + 1);
+            }
+        }, section.duration);
+    }
+    
+    function toggleCinematicPause() {
+        cinematicPaused = !cinematicPaused;
+        const btn = document.getElementById('pauseBtn');
+        if (cinematicPaused) {
+            btn.textContent = '▶ Resume';
+            window.speechSynthesis.pause();
+            if (cinematicTimeout) clearTimeout(cinematicTimeout);
+        } else {
+            btn.textContent = '⏸ Pause';
+            window.speechSynthesis.resume();
+            // Resume with remaining time (simplified - just use full duration)
+            const section = cinematicSequence[currentSection];
+            cinematicTimeout = setTimeout(() => {
+                playCinematicSection(currentSection + 1);
+            }, section.duration / 2);
+        }
+    }
+    
+    function skipCinematicSection() {
+        if (cinematicTimeout) clearTimeout(cinematicTimeout);
+        window.speechSynthesis.cancel();
+        cinematicPaused = false;
+        document.getElementById('pauseBtn').textContent = '⏸ Pause';
+        playCinematicSection(currentSection + 1);
+    }
+    
+    function toggleCinematicNarration() {
+        narrationEnabled = !narrationEnabled;
+        const btn = document.getElementById('narrationBtn');
+        btn.textContent = narrationEnabled ? '🔊 Narration On' : '🔇 Narration Off';
+        if (!narrationEnabled) {
+            window.speechSynthesis.cancel();
+        }
+    }
+    
+    // Load voices (needed for some browsers)
+    if ('speechSynthesis' in window) {
+        speechSynthesis.getVoices();
+        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+    }
+    </script>
 
     <script>
         // Audio toggle for background music
