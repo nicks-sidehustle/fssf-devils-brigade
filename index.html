@@ -530,7 +530,13 @@
     </style>
 </head>
 <body>
-    <button class="audio-control" onclick="toggleAudio()" id="audioBtn">🔊 Play Music</button>
+    <button class="audio-control" onclick="toggleAudio()" id="audioBtn">🎵 Play Music</button>
+    
+    <!-- Audio: Satie's Gymnopédie No. 1 - Public Domain from Internet Archive -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://archive.org/download/satie-gnossienne-gymnopedie/Satie%20Gymnopedie%201.mp3" type="audio/mpeg">
+        <source src="https://archive.org/download/GymnopedieNo.1/Gymnopedie%20No.%201.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- HERO -->
     <section class="hero">
@@ -931,52 +937,27 @@
     </footer>
 
     <script>
-        // Simple audio toggle using Web Audio API with a generated tone
-        // (Avoiding external files due to CORS issues)
-        let audioCtx = null;
+        // Audio toggle for background music
         let isPlaying = false;
-        let gainNode = null;
-        let oscillators = [];
-        
-        function createAmbientSound() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            
-            gainNode = audioCtx.createGain();
-            gainNode.connect(audioCtx.destination);
-            gainNode.gain.value = 0.1;
-            
-            // Create a somber ambient drone
-            const frequencies = [110, 165, 220]; // A2, E3, A3 - minor feel
-            
-            frequencies.forEach((freq, i) => {
-                const osc = audioCtx.createOscillator();
-                const oscGain = audioCtx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                oscGain.gain.value = 0.3 / (i + 1);
-                
-                osc.connect(oscGain);
-                oscGain.connect(gainNode);
-                osc.start();
-                
-                oscillators.push({ osc, gain: oscGain });
-            });
-        }
         
         function toggleAudio() {
+            const audio = document.getElementById('bgMusic');
             const btn = document.getElementById('audioBtn');
             
             if (!isPlaying) {
-                createAmbientSound();
-                btn.textContent = '🔇 Mute';
-                isPlaying = true;
+                audio.volume = 0.4;
+                audio.play().then(() => {
+                    btn.textContent = '🔇 Mute Music';
+                    btn.style.background = 'rgba(80,80,80,0.8)';
+                    isPlaying = true;
+                }).catch(err => {
+                    console.log('Audio play failed:', err);
+                    btn.textContent = '🎵 Click to Play';
+                });
             } else {
-                oscillators.forEach(({ osc }) => osc.stop());
-                oscillators = [];
-                btn.textContent = '🔊 Play Music';
+                audio.pause();
+                btn.textContent = '🎵 Play Music';
+                btn.style.background = 'rgba(0,0,0,0.7)';
                 isPlaying = false;
             }
         }
