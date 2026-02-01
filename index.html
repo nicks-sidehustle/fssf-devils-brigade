@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Devil's Brigade | First Special Service Force</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+
+        /* Audio Controls */
+        .audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            border: 1px solid #555;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .audio-control:hover {
+            background: #333;
+            border-color: #888;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)),
+                        url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/First_Special_Service_Force.jpg/1280px-First_Special_Service_Force.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(transparent, #0a0a0a);
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 4.5rem;
+            color: #fff;
+            text-shadow: 0 0 60px rgba(80, 80, 80, 0.8);
+            letter-spacing: 8px;
+            animation: fadeInUp 2s ease;
+        }
+
+        .hero .subtitle {
+            font-size: 1.8rem;
+            color: #888;
+            margin-top: 20px;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            animation: fadeInUp 2s ease 0.5s both;
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 40px;
+            font-style: italic;
+            max-width: 600px;
+            line-height: 1.8;
+            animation: fadeInUp 2s ease 1s both;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid #666;
+            border-bottom: 2px solid #666;
+            transform: rotate(45deg);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(15px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styling */
+        section {
+            min-height: 100vh;
+            padding: 100px 10%;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #aaa;
+            margin-bottom: 40px;
+            text-align: center;
+            letter-spacing: 4px;
+        }
+
+        .narration {
+            font-size: 1.3rem;
+            line-height: 2;
+            max-width: 900px;
+            margin: 0 auto 60px;
+            text-align: center;
+            color: #999;
+        }
+
+        .narration .highlight {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .narration .somber {
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Map Container */
+        .map-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px auto;
+            background: rgba(30,30,30,0.5);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #333;
+        }
+
+        .map-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .map-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .map-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .map-btn {
+            background: rgba(80,80,80,0.3);
+            border: 1px solid #555;
+            color: #aaa;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .map-btn:hover, .map-btn.active {
+            background: rgba(100,100,100,0.5);
+            color: #fff;
+            border-color: #888;
+        }
+
+        /* Journey path animation */
+        .journey-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawPath 3s ease forwards;
+        }
+
+        @keyframes drawPath {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .location-dot {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .location-label {
+            font-size: 11px;
+            fill: #ccc;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .image-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.5s;
+            filter: grayscale(30%);
+        }
+
+        .image-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-card .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            padding: 60px 20px 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .image-card .caption .source {
+            color: #666;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Quote Block */
+        .quote-block {
+            background: linear-gradient(135deg, rgba(60,60,60,0.2), rgba(0,0,0,0.4));
+            border-left: 4px solid #666;
+            padding: 40px 50px;
+            margin: 60px auto;
+            max-width: 800px;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #ccc;
+            position: relative;
+        }
+
+        .quote-block::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 6rem;
+            color: #444;
+            opacity: 0.5;
+            font-family: 'Cinzel', serif;
+        }
+
+        .quote-block .attribution {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 20px;
+            font-style: normal;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 60px auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #444;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 30px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(80,80,80,0.3);
+        }
+
+        .timeline-date {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .timeline-text {
+            color: #888;
+            line-height: 1.8;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 40px 20px;
+            background: rgba(60,60,60,0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(80,80,80,0.3);
+        }
+
+        .stat-number {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: #999;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+        }
+
+        /* Somber Section - Aftermath */
+        .aftermath-section {
+            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.95));
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+
+        .aftermath-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .aftermath-card {
+            padding: 30px;
+            background: rgba(40,40,40,0.3);
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .aftermath-card h3 {
+            color: #aaa;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .aftermath-card p {
+            color: #777;
+            line-height: 1.8;
+        }
+
+        /* Personal Story Section */
+        .personal-section {
+            background: linear-gradient(135deg, rgba(50,50,50,0.1), rgba(0,0,0,0.3));
+        }
+
+        .personal-journey {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .personal-detail {
+            display: inline-block;
+            margin: 10px 20px;
+            padding: 15px 30px;
+            background: rgba(60,60,60,0.2);
+            border-radius: 30px;
+            border: 1px solid #444;
+            color: #aaa;
+        }
+
+        .personal-placeholder {
+            text-align: center;
+            margin-top: 40px;
+            padding: 60px;
+            border: 2px dashed rgba(80,80,80,0.5);
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px;
+            background: #050505;
+            border-top: 1px solid #222;
+        }
+
+        .footer p {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .footer .sources {
+            color: #444;
+            font-size: 0.8rem;
+        }
+
+        .footer .sources a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .footer .sources a:hover {
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; letter-spacing: 4px; }
+            .hero .subtitle { font-size: 1rem; letter-spacing: 6px; }
+            section { padding: 60px 5%; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .timeline::before { left: 20px; }
+            .timeline-content { width: 85%; margin-left: 50px; }
+            .timeline-item:nth-child(odd) { flex-direction: row; }
+            .map-controls { flex-wrap: wrap; }
+        }
+
+        /* Fade-in Animation on Scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="audio-control" onclick="toggleAudio()" id="audioBtn">🔊 Play Music</button>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>THE DEVIL'S BRIGADE</h1>
+        <p class="subtitle">First Special Service Force</p>
+        <p class="tagline">They were ordinary men asked to do extraordinary things.<br>This is what that cost.</p>
+        <div class="scroll-indicator"><span></span></div>
+    </section>
+
+    <!-- INTRODUCTION -->
+    <section class="fade-in">
+        <h2 class="section-title">Ordinary Men, Impossible Tasks</h2>
+        <p class="narration">
+            They weren't born soldiers. They were lumberjacks and farmers, factory workers and students. 
+            Young men from <span class="highlight">Oklahoma, Montana, Quebec, and Alberta</span> — 
+            pulled from their lives and thrust into something none of them fully understood.
+            <br><br>
+            The Germans would call them <span class="somber">"Die Schwarzen Teufel" — The Black Devils.</span>
+            <br><br>
+            But to themselves, they were just men trying to survive, 
+            doing a job they hoped would end the war and get them home.
+        </p>
+        
+        <div class="image-grid">
+            <div class="image-card">
+                <img src="https://i0.wp.com/unwritten-record.blogs.archives.gov/wp-content/uploads/sites/6/2024/05/111-SC-187847-S_001-scaled.jpg" alt="FSSF Soldier with insignia">
+                <div class="caption">
+                    A soldier sews the FSSF insignia — a red arrowhead with "USA" and "Canada" forming a cross. 
+                    Americans and Canadians served together as equals.
+                    <div class="source">National Archives: 111-SC-187847-S</div>
+                </div>
+            </div>
+            <div class="image-card">
+                <img src="https://i0.wp.com/unwritten-record.blogs.archives.gov/wp-content/uploads/sites/6/2024/05/111-SC-189158_001.jpg" alt="FSSF Paratroopers">
+                <div class="caption">
+                    Soldiers wave to friends boarding transport planes. Many wouldn't return.
+                    The Force suffered over 600% casualty turnover during the war.
+                    <div class="source">National Archives: 111-SC-189158</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE JOURNEY MAP -->
+    <section class="fade-in">
+        <h2 class="section-title">The Journey</h2>
+        <p class="narration">
+            From small towns across North America to the battlefields of Europe — 
+            trace the path these men traveled.
+        </p>
+
+        <div class="map-container">
+            <div class="map-controls">
+                <button class="map-btn active" onclick="showPhase('all')">Full Journey</button>
+                <button class="map-btn" onclick="showPhase('training')">Training</button>
+                <button class="map-btn" onclick="showPhase('pacific')">Pacific</button>
+                <button class="map-btn" onclick="showPhase('europe')">Europe</button>
+            </div>
+            
+            <svg viewBox="0 0 800 400" class="map-svg" id="journeyMap">
+                <!-- Simplified world map outline -->
+                <defs>
+                    <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#666"/>
+                        <stop offset="100%" style="stop-color:#999"/>
+                    </linearGradient>
+                </defs>
+                
+                <!-- North America outline (simplified) -->
+                <path d="M50,100 Q100,80 180,90 L200,120 Q220,100 280,110 L320,140 Q340,120 380,130 L400,180 L380,220 L340,260 L280,280 L200,270 L140,240 L100,200 L70,150 Z" 
+                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+                
+                <!-- Europe outline (simplified) -->
+                <path d="M500,80 Q540,70 580,75 L620,90 Q660,85 700,100 L720,140 L700,180 L660,200 L600,210 L540,200 L500,170 L490,130 Z" 
+                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+                
+                <!-- Italy (simplified) -->
+                <path d="M580,180 L600,210 L590,250 L570,280 L560,260 L570,220 Z" 
+                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+                
+                <!-- Alaska (simplified) -->
+                <path d="M60,60 Q90,50 120,55 L140,70 L120,85 L80,80 Z" 
+                      fill="rgba(60,60,60,0.3)" stroke="#444" stroke-width="1"/>
+
+                <!-- Journey path -->
+                <path id="mainPath" class="journey-path"
+                      d="M200,200 L240,150 L100,70 L240,150 L500,120 L570,230 L620,170" 
+                      fill="none" stroke="url(#pathGradient)" stroke-width="2" stroke-dasharray="5,5"/>
+
+                <!-- Location markers -->
+                <g id="locations">
+                    <!-- Oklahoma (origin) -->
+                    <circle cx="200" cy="200" r="6" fill="#888" class="location-dot" style="animation-delay: 0.5s"/>
+                    <text x="200" y="220" text-anchor="middle" class="location-label" style="animation-delay: 0.5s">Oklahoma</text>
+                    <text x="200" y="232" text-anchor="middle" class="location-label" style="animation-delay: 0.5s; font-size: 9px; fill: #888">(Home)</text>
+                    
+                    <!-- Montana (training) -->
+                    <circle cx="240" cy="150" r="8" fill="#aaa" class="location-dot" style="animation-delay: 1s"/>
+                    <text x="240" y="138" text-anchor="middle" class="location-label" style="animation-delay: 1s">Helena, Montana</text>
+                    <text x="240" y="126" text-anchor="middle" class="location-label" style="animation-delay: 1s; font-size: 9px; fill: #888">(Training - 1942)</text>
+                    
+                    <!-- Kiska, Alaska -->
+                    <circle cx="100" cy="70" r="6" fill="#777" class="location-dot" style="animation-delay: 1.5s"/>
+                    <text x="100" y="58" text-anchor="middle" class="location-label" style="animation-delay: 1.5s">Kiska, Alaska</text>
+                    <text x="100" y="46" text-anchor="middle" class="location-label" style="animation-delay: 1.5s; font-size: 9px; fill: #888">(Aug 1943)</text>
+                    
+                    <!-- Italy -->
+                    <circle cx="570" cy="230" r="8" fill="#aaa" class="location-dot" style="animation-delay: 2s"/>
+                    <text x="545" y="245" text-anchor="middle" class="location-label" style="animation-delay: 2s">Italy</text>
+                    <text x="545" y="257" text-anchor="middle" class="location-label" style="animation-delay: 2s; font-size: 9px; fill: #888">(Dec 1943 - Jun 1944)</text>
+                    
+                    <!-- Southern France -->
+                    <circle cx="540" cy="170" r="6" fill="#888" class="location-dot" style="animation-delay: 2.5s"/>
+                    <text x="540" y="158" text-anchor="middle" class="location-label" style="animation-delay: 2.5s">Southern France</text>
+                    <text x="540" y="146" text-anchor="middle" class="location-label" style="animation-delay: 2.5s; font-size: 9px; fill: #888">(Aug - Dec 1944)</text>
+                </g>
+
+                <!-- Battle markers (smaller, indicating conflict) -->
+                <g id="battles" fill="none" stroke="#666" stroke-width="1">
+                    <circle cx="570" cy="210" r="3" fill="#555" title="Monte la Difensa"/>
+                    <circle cx="575" cy="240" r="3" fill="#555" title="Anzio"/>
+                    <circle cx="580" cy="225" r="3" fill="#555" title="Rome"/>
+                </g>
+            </svg>
+            
+            <div class="map-legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #888"></div>
+                    <span>Origin/Destination</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #aaa"></div>
+                    <span>Major Location</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #555"></div>
+                    <span>Combat Operations</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRAINING -->
+    <section class="fade-in">
+        <h2 class="section-title">Training at Fort Harrison</h2>
+        <p class="narration">
+            At Fort William Henry Harrison in Helena, Montana, volunteers were put through 
+            some of the most demanding training of any unit in the war. 
+            <span class="somber">Not everyone made it through.</span>
+            <br><br>
+            They learned to parachute, ski, climb mountains, fight with knives, and demolish targets.
+            They trained in conditions designed to break them — because what awaited them would be worse.
+        </p>
+
+        <div class="image-grid">
+            <div class="image-card">
+                <img src="https://i0.wp.com/unwritten-record.blogs.archives.gov/wp-content/uploads/sites/6/2024/05/111-C-3120_001-scaled.jpg" alt="FSSF Ski Training">
+                <div class="caption">
+                    Para-skitroopers train in the Montana mountains. This winter warfare training 
+                    would prove essential in the Italian Alps.
+                    <div class="source">National Archives: 111-C-3120</div>
+                </div>
+            </div>
+            <div class="image-card">
+                <img src="https://i0.wp.com/unwritten-record.blogs.archives.gov/wp-content/uploads/sites/6/2024/05/111-SC-187744-S_001.jpg" alt="FSSF Parachute Training">
+                <div class="caption">
+                    A soldier practices the parachute exit. In the FSSF, everyone trained for everything — 
+                    including doctors and chaplains.
+                    <div class="source">National Archives: 111-SC-187744-S</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BATTLES TIMELINE -->
+    <section class="fade-in">
+        <h2 class="section-title">The Campaigns</h2>
+        <p class="narration">
+            From the Aleutian Islands to the mountains of Italy to the fields of France — 
+            the Force was sent wherever the mission seemed impossible.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">August 15, 1943</div>
+                    <div class="timeline-title">Kiska, Alaska</div>
+                    <div class="timeline-text">
+                        Their first deployment. The Force landed on Kiska Island expecting fierce combat — 
+                        but the Japanese had already evacuated. Despite no enemy contact, 
+                        28 men died from friendly fire and accidents in the fog and confusion. 
+                        <em>War was already proving unpredictable and costly.</em>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">December 3, 1943</div>
+                    <div class="timeline-title">Monte la Difensa, Italy</div>
+                    <div class="timeline-text">
+                        A German stronghold on a 3,000-foot mountain that had stopped every Allied assault.
+                        The Force scaled the cliffs at night, in freezing rain, ropes slick with ice.
+                        They took the position — but at terrible cost. 
+                        <strong>The Force suffered 77% casualties</strong> in the Italian mountain campaign.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">February - May 1944</div>
+                    <div class="timeline-title">Anzio Beachhead</div>
+                    <div class="timeline-text">
+                        <strong>99 days of continuous combat.</strong> Undermanned and exhausted, 
+                        the Force held a dangerous section of the line. The night raids that earned them 
+                        their reputation were born of necessity — small units striking in darkness 
+                        because they couldn't afford the casualties of conventional attacks.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">December 5, 1944</div>
+                    <div class="timeline-title">Disbandment</div>
+                    <div class="timeline-text">
+                        After Rome and Southern France, the Force was officially disbanded 
+                        near Villeneuve-Loubet, France. The Americans and Canadians who had fought 
+                        as brothers said goodbye — many for the last time.
+                        <em>The war would continue without them.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE COST -->
+    <section class="fade-in">
+        <h2 class="section-title">The Cost</h2>
+        <p class="narration">
+            The numbers tell part of the story. But numbers can't capture 
+            what these men carried with them for the rest of their lives.
+        </p>
+
+        <div class="stats-grid fade-in">
+            <div class="stat-item">
+                <span class="stat-number">2,314</span>
+                <span class="stat-label">Original Members</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">600%+</span>
+                <span class="stat-label">Casualty Turnover</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">434</span>
+                <span class="stat-label">Killed in Action</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">1,800+</span>
+                <span class="stat-label">Wounded</span>
+            </div>
+        </div>
+
+        <p class="narration" style="margin-top: 40px;">
+            <span class="somber">
+                The casualty rate of over 600% means the unit was essentially 
+                replaced more than six times over. Most of the men who started 
+                were not there at the end.
+            </span>
+        </p>
+    </section>
+
+    <!-- AFTERMATH - THE SOBERING REALITY -->
+    <section class="aftermath-section fade-in">
+        <h2 class="section-title">Coming Home</h2>
+        <p class="narration">
+            When the war ended, the surviving members of the Force came home to a world 
+            that had moved on without them. <span class="somber">The hardest battles were often yet to come.</span>
+        </p>
+
+        <div class="aftermath-grid">
+            <div class="aftermath-card">
+                <h3>The Silence</h3>
+                <p>
+                    Most veterans never talked about what they saw. There was no word for PTSD then — 
+                    they called it "combat fatigue" or "shell shock," and men were expected to just 
+                    get over it. Many never did. They carried the war quietly, alone.
+                </p>
+            </div>
+            <div class="aftermath-card">
+                <h3>The Nightmares</h3>
+                <p>
+                    Night raids meant killing in the dark, up close and personal. 
+                    Those memories don't fade. Many veterans struggled with nightmares 
+                    for decades. Some turned to alcohol. Some couldn't hold jobs or maintain relationships.
+                </p>
+            </div>
+            <div class="aftermath-card">
+                <h3>The Missing Faces</h3>
+                <p>
+                    Every survivor carried the weight of friends who didn't make it. 
+                    In a unit with 600% casualty turnover, everyone lost someone. 
+                    That kind of loss shapes a person forever.
+                </p>
+            </div>
+            <div class="aftermath-card">
+                <h3>Rebuilding</h3>
+                <p>
+                    Despite everything, most tried to build normal lives. They married, raised families, 
+                    worked jobs. Some found peace in the mountains and forests that reminded them of 
+                    Montana training. Others couldn't escape the war no matter how hard they tried.
+                </p>
+            </div>
+        </div>
+
+        <div class="quote-block" style="margin-top: 60px;">
+            We weren't heroes. We were just young men doing a terrible job that had to be done. 
+            The real heroes are the ones who didn't come back.
+            <div class="attribution">— FSSF Veteran</div>
+        </div>
+    </section>
+
+    <!-- PERSONAL STORY -->
+    <section class="personal-section fade-in">
+        <h2 class="section-title">Roland's Story</h2>
+        <p class="narration">
+            One of those young men was <span class="highlight">Roland Oroville Morgan</span> — 
+            a soldier in the 4th Company, 1st Regiment of the First Special Service Force.
+        </p>
+
+        <div class="personal-journey">
+            <div class="personal-detail">📍 From Oklahoma</div>
+            <div class="personal-detail">🎖️ FSSF Unit 4-1</div>
+            <div class="personal-detail">🏔️ Settled in Montana</div>
+        </div>
+
+        <p class="narration" style="margin-top: 40px;">
+            Like many Force veterans, Roland made Montana his home after the war. 
+            Perhaps the mountains reminded him of Fort Harrison, where boys became soldiers. 
+            Or perhaps it was far enough from Oklahoma — and from Italy — to start fresh.
+        </p>
+
+        <div class="personal-placeholder">
+            <p style="color: #666; font-style: italic; margin-bottom: 20px;">
+                [ Family photos, service records, and personal memories will be added here ]
+            </p>
+            <p style="color: #555; font-size: 0.9rem;">
+                Share your family's stories of Grandpa Roland — <br>
+                the memories that don't appear in any history book.
+            </p>
+        </div>
+    </section>
+
+    <!-- LEGACY -->
+    <section class="fade-in">
+        <h2 class="section-title">Legacy</h2>
+        <p class="narration">
+            In 2015, surviving members of the First Special Service Force — 
+            most in their 90s — received the <span class="highlight">Congressional Gold Medal</span>, 
+            the highest civilian honor in the United States.
+            <br><br>
+            For many, it came 70 years late. For some, it came after they had already passed.
+            <br><br>
+            <span class="somber">
+                The Force is recognized as the ancestor of modern Special Forces — 
+                the Green Berets, the Canadian Special Operations Regiment. 
+                But the men who served weren't thinking about legacy. 
+                They were thinking about survival, and about getting home.
+            </span>
+        </p>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="fade-in">
+        <h2 class="section-title">Remember</h2>
+        <p class="narration">
+            The men of the First Special Service Force were not superheroes. 
+            They were human beings — scared, exhausted, far from home — 
+            who did what was asked of them at terrible cost.
+            <br><br>
+            They didn't want to be remembered as legends.<br>
+            <span class="somber">They wanted to be remembered at all.</span>
+            <br><br>
+            This is for Roland, and for all the men of the Force — <br>
+            the ones who came home, and the ones who didn't.
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>Created with respect for the men of the First Special Service Force</p>
+        <p class="sources">
+            Historical images: <a href="https://www.archives.gov/" target="_blank">U.S. National Archives</a><br>
+            Resources: <a href="http://www.firstspecialserviceforce.net/" target="_blank">FSSF Association</a> | 
+            <a href="https://arsof-history.org/first_special_service_force/" target="_blank">ARSOF History</a>
+        </p>
+    </footer>
+
+    <script>
+        // Simple audio toggle using Web Audio API with a generated tone
+        // (Avoiding external files due to CORS issues)
+        let audioCtx = null;
+        let isPlaying = false;
+        let gainNode = null;
+        let oscillators = [];
+        
+        function createAmbientSound() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            gainNode = audioCtx.createGain();
+            gainNode.connect(audioCtx.destination);
+            gainNode.gain.value = 0.1;
+            
+            // Create a somber ambient drone
+            const frequencies = [110, 165, 220]; // A2, E3, A3 - minor feel
+            
+            frequencies.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const oscGain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                oscGain.gain.value = 0.3 / (i + 1);
+                
+                osc.connect(oscGain);
+                oscGain.connect(gainNode);
+                osc.start();
+                
+                oscillators.push({ osc, gain: oscGain });
+            });
+        }
+        
+        function toggleAudio() {
+            const btn = document.getElementById('audioBtn');
+            
+            if (!isPlaying) {
+                createAmbientSound();
+                btn.textContent = '🔇 Mute';
+                isPlaying = true;
+            } else {
+                oscillators.forEach(({ osc }) => osc.stop());
+                oscillators = [];
+                btn.textContent = '🔊 Play Music';
+                isPlaying = false;
+            }
+        }
+
+        // Map phase controls
+        function showPhase(phase) {
+            // Update button states
+            document.querySelectorAll('.map-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Could add logic here to highlight different parts of the journey
+            // For now, just visual feedback
+        }
+
+        // Fade in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
