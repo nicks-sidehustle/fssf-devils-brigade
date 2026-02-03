@@ -513,6 +513,20 @@
             .personal-section { background: #0f0f0f; }
             .aftermath-section { background: #080808; }
         }
+        
+        /* Fallback: ensure content is visible even if JS fails */
+        @media (max-width: 768px) {
+            .fade-in {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+            }
+        }
+        
+        /* No-JS fallback */
+        .no-js .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* Fade-in Animation on Scroll */
         .fade-in {
