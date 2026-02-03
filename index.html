@@ -214,7 +214,7 @@
 
         /* Quote Block */
         .quote-block {
-            background: linear-gradient(135deg, rgba(60,60,60,0.2), rgba(0,0,0,0.4));
+            background: #141414;
             border-left: 4px solid #666;
             padding: 40px 50px;
             margin: 60px auto;
@@ -330,7 +330,7 @@
 
         /* Aftermath Section */
         .aftermath-section {
-            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.95));
+            background: #080808;
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
         }
@@ -364,7 +364,8 @@
 
         /* Personal Story Section */
         .personal-section {
-            background: linear-gradient(135deg, rgba(50,50,50,0.1), rgba(0,0,0,0.3));
+            background: #0f0f0f;
+            background: linear-gradient(135deg, #151515 0%, #0a0a0a 100%);
         }
 
         .personal-journey {
@@ -502,6 +503,15 @@
             .timeline-content { width: 85%; margin-left: 50px; }
             .timeline-item:nth-child(odd) { flex-direction: row; }
             .newspaper-clipping .article-text { column-count: 1; }
+            /* iOS Safari fix for fixed backgrounds */
+            .hero { background-attachment: scroll; }
+        }
+        
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            .hero { background-attachment: scroll; }
+            .personal-section { background: #0f0f0f; }
+            .aftermath-section { background: #080808; }
         }
 
         /* Fade-in Animation on Scroll */
