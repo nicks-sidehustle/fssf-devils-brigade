@@ -131,10 +131,16 @@
         /* Section Styling */
         section {
             min-height: auto;
-            padding: 60px 10%;
+            padding: 60px clamp(20px, 8vw, 120px);
             position: relative;
         }
-        
+
+        section > * {
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         section + section {
             padding-top: 40px;
         }
@@ -172,14 +178,16 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
             gap: 30px;
-            margin: 60px 0;
+            margin: 60px auto;
+            max-width: 1100px;
+            width: 100%;
         }
 
         .image-card {
             position: relative;
-            overflow: hidden;
             border-radius: 8px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
 
         .image-card img {
@@ -188,6 +196,7 @@
             object-fit: cover;
             transition: transform 0.5s;
             filter: grayscale(30%);
+            display: block;
         }
 
         .image-card:hover img {
@@ -195,20 +204,19 @@
         }
 
         .image-card .caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.95));
-            padding: 60px 20px 20px;
-            font-size: 0.9rem;
-            color: #aaa;
+            position: relative;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            padding: 14px 16px 16px;
+            font-size: 0.85rem;
+            color: #bbb;
+            line-height: 1.5;
         }
 
         .image-card .caption .source {
             color: #666;
             font-size: 0.75rem;
-            margin-top: 8px;
+            margin-top: 6px;
             font-style: italic;
         }
 
@@ -302,7 +310,9 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 30px;
-            margin: 60px 0;
+            margin: 60px auto;
+            max-width: 1100px;
+            width: 100%;
             text-align: center;
         }
 
@@ -337,10 +347,16 @@
 
         .aftermath-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
             max-width: 1000px;
             margin: 40px auto;
+        }
+
+        @media (max-width: 520px) {
+            .aftermath-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .aftermath-card {
@@ -497,7 +513,7 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; letter-spacing: 4px; }
             .hero .subtitle { font-size: 1rem; letter-spacing: 6px; }
-            section { padding: 60px 5%; }
+            section { padding: 40px clamp(16px, 5vw, 60px); }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .timeline::before { left: 20px; }
             .timeline-content { width: 85%; margin-left: 50px; }
@@ -698,23 +714,23 @@
             </div>
         </div>
 
-        <!-- Uniform Illustrations -->
+        <!-- Equipment & Uniforms -->
         <h3 style="text-align: center; color: #aaa; font-family: 'Cinzel', serif; margin-top: 60px; font-size: 1.3rem;">Equipment & Uniforms</h3>
         <div class="image-grid" style="margin-top: 30px;">
             <div class="image-card">
-                <img src="images/uniform-kiska.jpg" alt="FSSF soldier uniform for Operation Cottage (Kiska)" style="height: 400px; object-fit: contain; background: #f5f5f5;">
+                <img src="images/fssf-nara-244751.jpg" alt="Three FSSF soldiers receiving the Silver Star, Nettuno Italy, 1944" style="height: 400px; object-fit: cover;">
                 <div class="caption">
-                    FSSF soldier equipped for Operation Cottage (Kiska), August 1943. Note the Arctic field jacket, 
-                    wool knit cap, jump boots, and Thompson submachine gun.
-                    <div class="source">Illustration from "The Supercommandos" by Robert Todd Ross</div>
+                    Three men of the 1st Special Service Force presented the Silver Star at headquarters on the 3rd Division front, 
+                    Nettuno area, Italy. U.S. Fifth Army, March 14, 1944.
+                    <div class="source">National Archives: 111-SC-244751</div>
                 </div>
             </div>
             <div class="image-card">
-                <img src="images/uniform-combat-gear.jpg" alt="FSSF combat uniforms" style="height: 400px; object-fit: contain; background: #f5f5f5;">
+                <img src="images/fssf-anzio-patrol.jpg" alt="FSSF soldiers on patrol at Anzio, Italy" style="height: 400px; object-fit: cover;">
                 <div class="caption">
-                    FSSF soldiers in full combat gear, showing the variety of equipment carried into battle — 
-                    M1 Garand rifles, grenades, and the signature FSSF red arrowhead patch.
-                    <div class="source">Illustration from "The Supercommandos" by Robert Todd Ross</div>
+                    FSSF soldiers on combat patrol in the Anzio area, Italy, April 14, 1944 — 
+                    showing full combat gear including Thompson submachine guns and the FSSF red arrowhead patch.
+                    <div class="source">National Archives: 111-SC-189580-S</div>
                 </div>
             </div>
         </div>
@@ -745,12 +761,13 @@
 
             <!-- Colonel Frederick at Kiska -->
             <div style="max-width: 600px; margin: 40px auto; text-align: center; position: relative; z-index: 1;">
-                <img src="images/colonel-frederick-kiska.jpg" alt="Colonel Robert T. Frederick at Kiska" 
+                <img src="images/colonel-frederick-official.jpg" alt="Colonel Robert T. Frederick, Commander of the First Special Service Force" 
                      style="width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
                 <p style="color: #666; margin-top: 15px; font-size: 0.9rem; font-style: italic;">
-                    Colonel Robert T. Frederick, his face streaked with camouflage makeup, rests in the grass 
-                    near Kiska's Quisling Cove, 15 August 1943. Note the FSSF knife insignia on his shoulder.
-                    <br><span style="color: #555;">Source: National Archives</span>
+                    Colonel Robert T. Frederick, Commander of the First Special Service Force. 
+                    Frederick led the unit from its formation through its disbandment in December 1944, 
+                    earning 8 Purple Hearts in the process.
+                    <br><span style="color: #555;">Wikimedia Commons — Public Domain</span>
                 </p>
             </div>
             
@@ -769,11 +786,12 @@
 
             <!-- Winter Line Campaign Map -->
             <div style="max-width: 800px; margin: 40px auto; text-align: center; position: relative; z-index: 1;">
-                <img src="images/winter-line-campaign-map.jpg" alt="Winter Line Campaign Map, December 1943 - January 1944" 
+                <img src="images/anzio-cassino-map.jpg" alt="Anzio-Cassino Campaign Map, 1944" 
                      style="width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
                 <p style="color: #666; margin-top: 15px; font-size: 0.9rem; font-style: italic;">
-                    The Winter Line Campaign, December 1943 - January 1944. Monte la Difensa visible on the left.
-                    <br><span style="color: #555;">Source: "The Supercommandos" by Robert Todd Ross</span>
+                    The Anzio-Cassino campaign, May 1944. The FSSF fought through this region — scaling Monte la Difensa 
+                    and holding the Anzio beachhead for 99 days.
+                    <br><span style="color: #555;">Wikimedia Commons — Public Domain</span>
                 </p>
             </div>
             
@@ -794,11 +812,12 @@
 
             <!-- Night Patrol Photo -->
             <div style="max-width: 700px; margin: 40px auto; text-align: center; position: relative; z-index: 1;">
-                <img src="images/night-patrol-black-devils.jpg" alt="Forcemen with blackened faces preparing for night patrol" 
+                <img src="images/fssf-patrol-italy-2.jpg" alt="FSSF soldiers on patrol in Italy" 
                      style="width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
                 <p style="color: #666; margin-top: 15px; font-size: 0.9rem; font-style: italic;">
-                    Forcemen with faces blackened, cradling Thompson submachine guns, about to set out on a night patrol at Anzio.
-                    <br><span style="color: #555;">Source: National Archives, from "The Supercommandos" by Robert Todd Ross</span>
+                    FSSF soldiers on patrol near Anzio, Italy — the kind of aggressive night raids that earned them 
+                    the nickname "The Black Devils" from German forces.
+                    <br><span style="color: #555;">National Archives: 111-SC-189582-S</span>
                 </p>
             </div>
 
@@ -850,22 +869,11 @@
                         In a twist of fate, the 474th later served occupation duty in <strong>Norway</strong> — 
                         ironically fulfilling the Force's original intended destination. 
                         Roland continued serving, eventually earning a Presidential Unit Citation 
-                        with the <strong>506th Parachute Infantry Regiment</strong>.
+                        with the <strong>501st Parachute Infantry Regiment</strong>.
                     </div>
                 </div>
             </div>
 
-            <!-- Paris Photo after Liberation -->
-            <div style="max-width: 800px; margin: 40px auto; text-align: center; position: relative; z-index: 1;">
-                <img src="images/paris-trocadero.jpg" alt="Soldiers at the Trocadéro in Paris after liberation" 
-                     style="width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
-                <p style="color: #666; margin-top: 15px; font-size: 0.9rem; font-style: italic;">
-                    Soldiers photographed in front of the Palais de Chaillot at the Trocadéro in Paris, 
-                    following the liberation of Paris in August 1944. Roland is kneeling in the front row, 5th from the left. 
-                    Standing directly behind Roland is a French-Canadian prisoner of war rescued from Dachau Nazi concentration camp near Munich, Germany.
-                    <br><span style="color: #555;">Morgan Family Collection</span>
-                </p>
-            </div>
         </div>
     </section>
 
@@ -999,15 +1007,15 @@
         
         <!-- Roland's Portrait -->
         <div style="max-width: 300px; margin: 0 auto 30px auto; text-align: center;">
-            <img src="images/roland-portrait.jpg" alt="Roland Orville Morgan - Military Portrait" 
+            <img src="images/roland-portrait.jpg" alt="Roland Orville (&quot;R.O.&quot;) Morgan - Military Portrait" 
                  style="width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
             <p style="color: #888; margin-top: 10px; font-size: 0.85rem; font-style: italic;">
-                Roland Orville Morgan
+                Roland Orville ("R.O.") Morgan
             </p>
         </div>
         
         <p class="narration">
-            One of those young men was <span class="highlight">Roland Orville Morgan</span> — 
+            One of those young men was <span class="highlight">Roland Orville ("R.O.") Morgan</span> — 
             a soldier in the 4th Company, 1st Regiment of the First Special Service Force.
             <br><br>
             Roland enlisted on <span class="highlight">July 13, 1940</span> — more than a year before 
@@ -1033,25 +1041,26 @@
             <div class="personal-detail">🏆 Congressional Gold Medal (2015)</div>
         </div>
 
-        <!-- Wedding Photo -->
-        <div style="max-width: 500px; margin: 60px auto; text-align: center;">
-            <img src="images/wedding-photo.jpg" alt="Roland and Georgiana's wedding photo" 
-                 style="width: 100%; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
-            <p style="color: #888; margin-top: 20px; font-size: 1.1rem;">
-                Roland and Georgiana on their wedding day. After surviving the war, 
-                Roland came home to marry his sweetheart.
-            </p>
-        </div>
-
-        <!-- The Sweetheart -->
+        <!-- Wedding + Bicycle side by side -->
         <div class="image-grid" style="margin-top: 60px;">
             <div class="image-card">
-                <img src="images/roland-georgianna-bicycle.jpg" alt="Roland and Georgiana on a bicycle" style="height: 400px;">
+                <img src="images/wedding-photo.jpg" alt="Roland and Georgiana's wedding photo" style="height: 400px; object-fit: cover; object-position: top center;">
+                <div class="caption">
+                    Roland and Georgiana on their wedding day. After surviving the war, 
+                    Roland came home to marry his sweetheart.
+                </div>
+            </div>
+            <div class="image-card">
+                <img src="images/roland-georgianna-bicycle.jpg" alt="Roland and Georgiana on a bicycle" style="height: 400px; object-fit: cover; object-position: top center;">
                 <div class="caption">
                     Roland and his sweetheart, Georgiana — after the war. 
                     They would marry and have six children together.
                 </div>
             </div>
+        </div>
+
+        <!-- Sweetheart pillow + poem side by side -->
+        <div class="image-grid" style="margin-top: 60px; align-items: stretch;">
             <div class="image-card">
                 <img src="images/sweetheart-pillow.jpg" alt="Sweetheart poem sent from overseas" style="height: 400px;">
                 <div class="caption">
@@ -1059,20 +1068,20 @@
                     a common way soldiers let loved ones know they were thinking of them.
                 </div>
             </div>
-        </div>
-
-        <!-- The Poem -->
-        <div class="quote-block" style="margin: 60px auto;">
-            <em>Sweetheart</em><br><br>
-            I thought that you would like to know<br>
-            That someone's thoughts go where you go;<br>
-            That someone never can forget<br>
-            The hours we spent since first we met.<br>
-            That life is richer, sweeter far<br>
-            For such a sweetheart as you are.<br>
-            And now my constant prayer will be<br>
-            That God will keep you safe for me.
-            <div class="attribution">— From Roland to Georgiana, sent from overseas</div>
+            <div style="display: flex; align-items: center; justify-content: center; background: #111; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); padding: 40px 30px;">
+                <div style="text-align: center; color: #ccc; font-size: 1rem; line-height: 1.9; font-style: italic;">
+                    <div style="font-size: 1.1rem; font-weight: bold; color: #d4af37; margin-bottom: 16px; font-style: normal;">Sweetheart</div>
+                    I thought that you would like to know<br>
+                    That someone's thoughts go where you go;<br>
+                    That someone never can forget<br>
+                    The hours we spent since first we met.<br>
+                    That life is richer, sweeter far<br>
+                    For such a sweetheart as you are.<br>
+                    And now my constant prayer will be<br>
+                    That God will keep you safe for me.
+                    <div style="margin-top: 20px; font-size: 0.8rem; color: #666; font-style: normal;">— From Roland to Georgiana, sent from overseas</div>
+                </div>
+            </div>
         </div>
 
         <!-- Best Friends - American & Canadian -->
@@ -1080,18 +1089,12 @@
             <div class="image-card">
                 <img src="images/roland-andrew-best-friends.jpg" alt="Roland Morgan and Andrew Olsen" style="height: 450px;">
                 <div class="caption">
-                    <strong>Roland O. Morgan</strong> (Helena, MT, USA) and <strong>Andrew Olsen</strong> (Leduc, Alberta, Canada) — 
+                    <strong>Roland "R.O." Morgan</strong> (Helena, MT, USA) and <strong>Andrew Olsen</strong> (Leduc, Alberta, Canada) — 
                     best friends serving together in 4th Company, 1st Regiment. An American and a Canadian, brothers in arms.
                     <div class="source">Montana Military Museum</div>
                 </div>
             </div>
-            <div class="image-card">
-                <img src="images/rifle-placard.jpg" alt="Museum placard about Roland's M-1 rifle" style="height: 450px;">
-                <div class="caption">
-                    Museum placard describing Roland's M-1 Garand rifle — selected after testing "a dozen or more for accuracy and reliability."
-                    <div class="source">Montana Military Museum</div>
-                </div>
-            </div>
+
         </div>
 
         <!-- Andrew Olsen's Quote about Roland -->
@@ -1110,35 +1113,40 @@
 
         <!-- Museum Artifacts -->
         <h3 style="text-align: center; color: #aaa; font-family: 'Cinzel', serif; margin-top: 80px; font-size: 1.5rem;">Museum Artifacts</h3>
-        <div class="image-grid" style="margin-top: 30px;">
-            <div class="image-card">
-                <img src="images/tommy-gun-museum.jpg" alt="Roland's Thompson submachine gun on display" style="height: 350px;">
-                <div class="caption">
-                    A .45 Cal M1928 Thompson submachine gun on display at the Montana Military Museum, 
-                    alongside the iconic FSSF red arrowhead patch and V-42 stiletto knife. 
-                    While the FSSF did carry the Thompson, Roland always kept his M1 Garand with him.
-                    <div class="source">Montana Military Museum</div>
-                </div>
-            </div>
-            <div class="image-card">
-                <img src="images/german-flare-gun.jpg" alt="German flare gun captured at Anzio" style="height: 350px;">
-                <div class="caption">
-                    German flare gun captured by Roland from a Nazi Captain at Anzio. 
-                    The display also shows a 1944 German calendar marked "Die Sudfront" (The Southern Front).
-                    <div class="source">Montana Military Museum</div>
-                </div>
-            </div>
-        </div>
+        <div style="display: flex; gap: 16px; margin-top: 30px; align-items: stretch;">
 
-        <!-- Roland's M-1 Garand Rifle -->
-        <div style="max-width: 900px; margin: 40px auto; text-align: center;">
-            <img src="images/roland-m1-museum-display.jpg" alt="Roland's M-1 Garand rifle on display at the Montana Military Museum"
-                 style="width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
-            <p style="color: #666; margin-top: 15px; font-size: 0.9rem; font-style: italic;">
-                Roland's M-1 Garand rifle on display at the Montana Military Museum — selected after testing "a dozen or more for accuracy and reliability."
-                Sent home piece by piece at the war's end. Displayed alongside captured Nazi and Japanese flags.
-                <br><span style="color: #555;">Montana Military Museum</span>
-            </p>
+            <!-- Left column: Thompson + Flare Gun stacked -->
+            <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
+                <div class="image-card" style="flex: 1;">
+                    <img src="images/tommy-gun-museum.jpg" alt="Roland's Thompson submachine gun on display" style="height: 260px; width: 100%; object-fit: cover; object-position: center center;">
+                    <div class="caption">
+                        A .45 Cal M1928 Thompson submachine gun on display at the Montana Military Museum, 
+                        alongside the iconic FSSF red arrowhead patch and V-42 stiletto knife. 
+                        While the FSSF did carry the Thompson, Roland always kept his M1 Garand with him.
+                        <div class="source">Montana Military Museum</div>
+                    </div>
+                </div>
+                <div class="image-card" style="flex: 1;">
+                    <img src="images/german-flare-gun.jpg" alt="German flare gun captured at Anzio" style="height: 260px; width: 100%; object-fit: cover; object-position: center center;">
+                    <div class="caption">
+                        German flare gun captured by Roland from a Nazi Captain at Anzio. 
+                        The display also shows a 1944 German calendar marked "Die Sudfront" (The Southern Front).
+                        <div class="source">Montana Military Museum</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column: M-1 Garand full height -->
+            <div class="image-card" style="flex: 1; display: flex; flex-direction: column;">
+                <img src="images/roland-m1-museum-display.jpg" alt="Roland's M-1 Garand rifle on display at the Montana Military Museum"
+                     style="flex: 1; width: 100%; object-fit: cover; min-height: 0;">
+                <div class="caption">
+                    Roland's prized M-1 Garand rifle on display at the Montana Military Museum — selected after testing "a dozen or more for accuracy and reliability."
+                    Sent home piece by piece at the war's end. Displayed alongside captured Nazi and Japanese flags.
+                    <div class="source">Montana Military Museum</div>
+                </div>
+            </div>
+
         </div>
 
         <!-- The Shadow Box -->
@@ -1157,12 +1165,24 @@
             The <span class="highlight">Purple Heart</span> means Roland was wounded in combat.<br>
             The <span class="highlight">Silver Star</span> is awarded for gallantry in action against an enemy.<br>
             The <span class="highlight">Distinguished Unit Badge</span> recognizes extraordinary heroism in action as a unit.<br>
-            Roland earned <span class="highlight">2 Presidential Unit Citations</span> — one awarded for service in the FSSF, and one for his service with the 101st Airborne Division (506th Parachute Infantry Regiment).<br>
+            Roland earned <span class="highlight">2 Presidential Unit Citations</span> — one awarded for service in the FSSF, and one for his service with the 101st Airborne Division (501st Parachute Infantry Regiment).<br>
             His campaign ribbons — <span class="highlight">Central Europe, Southern France, Aleutian Islands, and Naples-Foggia</span> — 
             trace his path across the war's most demanding theaters.<br>
             In 2015, Congress awarded members of the 1st Special Service Force the <span class="highlight">Congressional Gold Medal</span>.<br><br>
             <span class="somber">Roland didn't just serve. He fought. He bled. He survived.</span>
         </p>
+
+        <!-- Paris Photo after Liberation -->
+        <div style="max-width: 800px; margin: 40px auto; text-align: center;">
+            <img src="images/paris-trocadero.jpg" alt="Soldiers at the Trocadéro in Paris after liberation" 
+                 style="width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
+            <p style="color: #666; margin-top: 15px; font-size: 0.9rem; font-style: italic;">
+                Soldiers photographed in front of the Palais de Chaillot at the Trocadéro in Paris, 
+                following the liberation of Paris in August 1944. Roland is kneeling in the front row, 5th from the left. 
+                Standing directly behind Roland is a French-Canadian prisoner of war rescued from Dachau Nazi concentration camp near Munich, Germany.
+                <br><span style="color: #555;">Morgan Family Collection</span>
+            </p>
+        </div>
 
         <!-- The Happy Ending -->
         <p class="narration" style="margin-top: 40px; margin-bottom: 0;">
@@ -1207,15 +1227,7 @@
             the ones who came home, and the ones who didn't.
         </p>
 
-        <!-- Book Reference -->
-        <div style="text-align: center; margin-top: 40px;">
-            <img src="images/supercommandos-book-cover.jpg" alt="The Supercommandos book cover" 
-                 style="max-width: 200px; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
-            <p style="color: #888; margin-top: 15px; font-size: 0.9rem;">
-                <em>"The Supercommandos: First Special Service Force, 1942-1944"</em><br>
-                by Robert Todd Ross
-            </p>
-        </div>
+
     </section>
 
     <!-- FOOTER -->
@@ -1224,7 +1236,6 @@
         <p class="sources">
             Historical images: <a href="https://www.archives.gov/" target="_blank">U.S. National Archives</a><br>
             Family artifacts: <a href="https://mhs.mt.gov/museums/FortHarrison" target="_blank">Montana Military Museum</a> at Fort Harrison<br>
-            Book: "The Supercommandos" by Robert Todd Ross (Schiffer Publishing)<br>
             Radio broadcasts: <a href="https://archive.org/" target="_blank">Internet Archive</a> (Public Domain)<br>
             Historical sources: <a href="http://www.firstspecialserviceforce.net/" target="_blank">FSSF Association</a> | 
             <a href="https://arsof-history.org/first_special_service_force/" target="_blank">ARSOF History</a> |
